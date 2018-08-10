@@ -6,7 +6,12 @@
 // 这句放到最后
 #include "serial.h"
 
-char buf_serial_recv[128] = {0};
+/**
+ *  定义串口接收缓冲区长度，不要小于返回指令的长度
+ */
+#define BUF_SERIAL_RECV_LENGTH 32
+
+char buf_serial_recv[BUF_SERIAL_RECV_LENGTH] = {0};
 THIS_IS_A_FIFO_BUFFER(buf_serial_recv);
 
 int flag_updated = 0;

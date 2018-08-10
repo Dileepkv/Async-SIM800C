@@ -32,18 +32,6 @@ extern "C"
 #include "task_work.h"
 }
 
-/**
- * hack...
- */
-#ifdef ARDUINO
-// #include "serial_arduino.c"
-// #include "sno_fifo_buffer.c"
-// #include "task_heartbeat.c"
-// #include "task_serial.c"
-// #include "task_sim800c.c"
-// #include "task_work.c"
-#endif
-
 void setup()
 {
     printf("[INFO    ]"

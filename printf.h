@@ -5,8 +5,9 @@
 #endif
 
 #ifdef ARDUINO
-#include <stdio.h>
 #include "ardprintf.h"
+#include <stdio.h>
+
 //#include "ardprintf.cpp"
 #define printf ardprintf
 #endif
