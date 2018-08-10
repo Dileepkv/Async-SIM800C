@@ -1,0 +1,18 @@
+{
+    "C_Cpp.intelliSenseEngineFallback": "Enabled",
+    "files.associations": {
+        "common.h": "c",
+        "common.h\u0000common.h": "c",
+        "common.h\u0000mmon.h": "c",
+        "common.h\u0000ommon.h": "c",
+        "stdlib.h": "c",
+        "task_sim800c.h": "c",
+        "task_serial.h": "c",
+        "sno_fifo_buffer.h": "c",
+        "windows.h": "c",
+        "sno_task_scheduler.h\u0000cheduler.h": "c",
+        "sno_task_scheduler.h\u0000duler.h": "c",
+        "sno_task_scheduler.h\u0000eduler.h": "c",
+        "sno_task_scheduler.h\u0000uler.h": "c"
+    }
+}
