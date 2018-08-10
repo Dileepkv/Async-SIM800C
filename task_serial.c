@@ -14,7 +14,7 @@
 char buf_serial_recv[BUF_SERIAL_RECV_LENGTH] = {0};
 THIS_IS_A_FIFO_BUFFER(buf_serial_recv);
 
-int flag_updated = 0;
+flag_t flag_updated = 0;
 void task_serial()
 {
 	STS_START();

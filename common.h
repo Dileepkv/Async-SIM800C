@@ -1,4 +1,5 @@
 #pragma once
+typedef unsigned char flag_t;
 typedef unsigned int uint;
 #define MAX(X, Y)            \
 	({                       \

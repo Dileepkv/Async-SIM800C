@@ -1,3 +1,8 @@
+/**
+ * 心跳线程 v2018.08.10
+ * Copyright (C) 2018 雪星实验室
+ */
+
 #include "task_heartbeat.h"
 #include "timer.h"
 #include "common.h"

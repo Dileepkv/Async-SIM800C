@@ -1,6 +1,6 @@
 /**
  * This is an iot project with SIM800C module, arduino...
- * Copyright (C) 2018 Snowstar
+ * Copyright (C) 2018 雪星实验室
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

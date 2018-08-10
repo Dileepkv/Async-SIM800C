@@ -1,6 +1,6 @@
 /**
  * 雪星管道库 v2018.08.10
- * Copyright (C) 2018 Snowstar
+ * Copyright (C) 2018 雪星实验室
  */
 #include "sno_fifo_buffer.h"
 #include "common.h"

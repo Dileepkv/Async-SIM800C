@@ -1,6 +1,6 @@
 /**
  * 雪星管道库 v2018.08.10
- * Copyright (C) 2018 Snowstar
+ * Copyright (C) 2018 雪星实验室
  */
 #include "common.h"
 #include <string.h>

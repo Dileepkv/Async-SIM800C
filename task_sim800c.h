@@ -1,3 +1,8 @@
+/**
+ * SIM800C 模块异步通信程序 v2018.08.10
+ * Copyright (C) 2018 雪星实验室
+ */
+
 #include "sno_fifo_buffer.h"
 #include "task_serial.h"
 #pragma once

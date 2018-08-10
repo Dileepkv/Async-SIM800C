@@ -1,3 +1,7 @@
+/**
+ * SIM800C 模块异步通信程序 v2018.08.10
+ * Copyright (C) 2018 雪星实验室
+ */
 //
 #include "task_sim800c.h"
 #include "common.h"
@@ -10,12 +14,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 /**
  *  定义 SOCKET 接受缓冲区长度，不要小于需要匹配的指令的长度
  */
 #define BUF_SOCKET_RECV_LENGTH 16
-
 
 /**
  *  定义 SOCKET 发送缓冲区长度，不要小于需要匹配的指令的长度
@@ -30,11 +32,11 @@ char buf_socket_send[BUF_SOCKET_SEND_LENGTH] = {0};
 THIS_IS_A_FIFO_BUFFER(buf_socket_send);
 
 /**
- * TCP 连接
+ * TCP 连接配置
  */
-int flag_socket_close = 0;
-int flag_socket_ready = 0;
-int flag_server_configured = 0;
+flag_t flag_socket_close = 0;
+flag_t flag_socket_ready = 0;
+flag_t flag_server_configured = 0;
 char *protocol, *host, *port;
 inline void config_server(char *_protocol, char *_host, char *_port)
 {
@@ -48,7 +50,7 @@ inline void config_server(char *_protocol, char *_host, char *_port)
  * 模块指令
  */
 long long timer_query = 0;
-int flag_timeout = 0;
+flag_t flag_timeout = 0;
 char *buf_serial_recv_last_find = NULL;
 #define QUERY_AT(timeout, cmd, find_str)                             \
     buf_serial_recv_clrbuf();                                        \

@@ -1,16 +1,5 @@
 {
     "files.associations": {
-        "printf.h": "c",
-        "stdio.h": "c",
-        "common.h": "c",
-        "serial.h": "c",
-        "ardprintf.h": "c",
-        "timer.h": "c",
-        "serial_arduino.h": "c",
-        "task_serial.h": "c",
-        "sno_fifo_buffer.h": "c",
-        "task_sim800c.h": "c",
-        "task_work.c": "cpp",
-        "string.h": "c"
+        "sno_printf_logging.h": "c"
     }
 }
