@@ -69,7 +69,7 @@ extern void show_repr(char *data, uint len);
     }                                                                     \
     inline void BUFFER##_show(void)                                       \
     {                                                                     \
-        printf("[DEBUG]" #BUFFER "='");                                   \
+        printf("[DATA ]" #BUFFER "='");                                   \
         show_repr(BUFFER, BUFFER##_wi);                                   \
         printf("'\n");                                                    \
     }                                                                     \

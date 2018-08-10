@@ -7,7 +7,7 @@
    http://arduino.stackexchange.com/a/201
 */
 
-// 更新(20180811) 增加了 \n 的支持
+// 更新(20180811) 修复了 \n 的支持
 
 #ifndef ARDPRINTF
 #define ARDPRINTF
@@ -73,6 +73,8 @@ extern "C" int ardprintf(const char *str, ...)
 			}
 		}
 	};
+	temp[j] = '\0';
+	Serial.print(temp);
 	return count + 1;
 }
 

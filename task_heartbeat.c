@@ -14,7 +14,7 @@ void task_heartbeat()
 	static timer_t timer = 0;
 	while (1)
 	{
-		PRINTF_DEBUG("心跳线程");
+		PRINTF_DEBUG("心跳线程\n");
 		DELAY(timer, 5000);
 	}
 	STS_ENDED();

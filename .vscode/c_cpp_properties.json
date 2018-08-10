@@ -10,7 +10,8 @@
                 "C:/MinGW/bin/../lib/gcc/mingw32/6.3.0/include/c++/backward",
                 "C:/MinGW/bin/../lib/gcc/mingw32/6.3.0/include",
                 "C:/MinGW/bin/../lib/gcc/mingw32/6.3.0/../../../../include",
-                "C:/MinGW/bin/../lib/gcc/mingw32/6.3.0/include-fixed"
+                "C:/MinGW/bin/../lib/gcc/mingw32/6.3.0/include-fixed",
+                "C:/Program Files (x86)/Arduino IDE for Microduino/hardware/arduino/avr"
             ],
             "defines": [
                 "WINDOWS",
@@ -31,7 +32,8 @@
                     "C:/MinGW/bin/../lib/gcc/mingw32/6.3.0/include/c++/backward",
                     "C:/MinGW/bin/../lib/gcc/mingw32/6.3.0/include",
                     "C:/MinGW/bin/../lib/gcc/mingw32/6.3.0/../../../../include",
-                    "C:/MinGW/bin/../lib/gcc/mingw32/6.3.0/include-fixed"
+                    "C:/MinGW/bin/../lib/gcc/mingw32/6.3.0/include-fixed",
+                    "C:/Program Files (x86)/Arduino IDE for Microduino/hardware/arduino/avr"
                 ]
             },
             "intelliSenseMode": "clang-x64",

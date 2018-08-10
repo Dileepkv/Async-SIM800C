@@ -12,7 +12,7 @@ void init_serial()
 
 	if (hCom == INVALID_HANDLE_VALUE)
 	{
-		PRINTF_DEBUG("串口 %s 打开失败！\n", DEBUG_SERIAL_PORT);
+		PRINTF_ERROR("串口 %s 打开失败！\n", DEBUG_SERIAL_PORT);
 		return;
 	}
 	else
@@ -50,7 +50,7 @@ unsigned int serial_write(char *buffer, unsigned int buffer_length)
 		WriteFile(hCom, buffer, buffer_length, &wCount, NULL);
 	if (!bWriteStat)
 	{
-		PRINTF_DEBUG("FAILED TO WRITE SERIAL!");
+		PRINTF_DEBUG("FAILED TO WRITE SERIAL!\n");
 		init_serial();
 		return 0;
 	}
@@ -64,7 +64,7 @@ unsigned int serial_read(char *buffer, unsigned int buffer_length)
 	unsigned int bReadStat = ReadFile(hCom, buffer, buffer_length, &wCount, NULL);
 	if (!bReadStat)
 	{
-		PRINTF_DEBUG("FAILED TO READ SERIAL!");
+		PRINTF_DEBUG("FAILED TO READ SERIAL!\n");
 		init_serial();
 		return 0;
 	}

@@ -12,12 +12,19 @@
  */
 #pragma once
 
+#ifdef WINDOWS
+#define LOGGING_LEVEL_DEBUG
+#endif
+#ifdef ARDUINO
+#define LOGGING_LEVEL_INFO
+#endif
+
 /**
  * 在这里选择一个调试等级来取消注释
  */
 // #define LOGGING_LEVEL_ALL
 // #define LOGGING_LEVEL_DEBUG
-#define LOGGING_LEVEL_INFO
+// #define LOGGING_LEVEL_INFO
 // #define LOGGING_LEVEL_WARN
 // #define LOGGING_LEVEL_ERROR
 // #define LOGGING_LEVEL_FATAL

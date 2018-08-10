@@ -20,7 +20,7 @@
 #define BUF_SOCKET_RECV_LENGTH 16
 
 /**
- *  定义 SOCKET 发送缓冲区长度，不要小于需要匹配的指令的长度
+ *  定义 SOCKET 发送缓冲区长度，不要小于指令的长度
  */
 #define BUF_SOCKET_SEND_LENGTH 16
 
@@ -64,7 +64,7 @@ char *buf_serial_recv_last_find = NULL;
 #define QUERY_DATA(timeout, data, len, find_str)                     \
     buf_serial_recv_clrbuf();                                        \
     serial_write((char *)(data), len);                               \
-    PRINTF_DEBUG("SENDDATA: '");                                     \
+    printf("[DATA ] SENDDATA: '");                                    \
     show_repr((char *)(data), len);                                  \
     printf("'\n");                                                   \
     SETTIMER(timer_query);                                           \
@@ -192,7 +192,6 @@ check_connect:
         flag_socket_ready = 0;
         goto check_connect;
     }
-
     PRINTF_DEBUG("正在检测信号质量...\n");
     QUERY_AT(1000, "AT+CSQ", "+CSQ: ");
     if (flag_timeout)
@@ -202,13 +201,19 @@ check_connect:
     sscanf(buf_serial_recv_last_find + 6, "%d,%d", &xhzl1, &xhzl2);
     PRINTF_INFO("信号质量<%d, %d>\n", xhzl1, xhzl2);
 
-    PRINTF_DEBUG("正在确认连接状态...");
-    QUERY_AT(1000, "AT+CIPSTATUS", "OK");
+    PRINTF_DEBUG("正在确认连接状态...\n");
+    QUERY_AT(2000, "AT+CIPSTATUS", "STATE: ");
     if (flag_timeout)
         goto check_at;
+
+    // 把 STATE: 后面剩下的数据接收一下
+    buf_serial_recv_trimleft(buf_serial_recv_last_find - buf_serial_recv +
+                             strlen("STATE: "));
+    STS_DOEVENTS();
+    // 然后判断情况
     if (buf_serial_recv_find((char *)"CONNECT OK"))
     {
-        PRINTF_INFO("已连接到服务器");
+        PRINTF_INFO("已连接到服务器\n");
         flag_socket_ready = 1;
         goto communication;
     }
@@ -217,35 +222,35 @@ check_connect:
         // 8诫还没较撅
         if (TIMEOUT(timer_connecting, 8000))
         {
-            PRINTF_WARN("连接超时，尝试重新连接");
+            PRINTF_WARN("连接超时，尝试重新连接\n");
             goto socket_connect_to_server;
         }
-        PRINTF_INFO("");
+        PRINTF_INFO("\n");
         goto check_connect;
     }
     if (buf_serial_recv_find((char *)"ERROR"))
     {
-        PRINTF_ERROR("连接错误，尝试重新连接");
+        PRINTF_ERROR("连接错误，尝试重新连接\n");
         goto socket_connect_to_server;
     }
     if (buf_serial_recv_find((char *)"TCP CLOSED"))
     {
-        PRINTF_ERROR("连接断开，尝试重新连接");
+        PRINTF_ERROR("连接断开，尝试重新连接\n");
         flag_socket_ready = 0;
         goto socket_connect_to_server;
     }
     if (buf_serial_recv_find((char *)"IP INITIAL"))
     {
-        PRINTF_DEBUG("未获得IP，尝试重新连接");
+        PRINTF_DEBUG("未获得IP，尝试重新连接\n");
         goto socket_connect_to_server;
     }
     if (buf_serial_recv_find((char *)"IP CONFIG"))
     {
-        PRINTF_DEBUG("正在获取IP");
+        PRINTF_DEBUG("正在获取IP\n");
         goto check_connect;
     }
 
-    PRINTF_ERROR("未能确认链接状态");
+    PRINTF_ERROR("未能确认链接状态\n");
     goto socket_connect_to_server;
 
 communication:
@@ -254,7 +259,7 @@ communication:
     watch_status:
         if (buf_serial_recv_find((char *)"CLOSED"))
         {
-            PRINTF_DEBUG("接憋较匡...");
+            PRINTF_DEBUG("接憋较匡...\n");
             flag_socket_ready = 0;
             // 皆讹
             goto socket_connect_to_server;
@@ -273,7 +278,7 @@ communication:
             buf_serial_recv_last_find = posColom + 1;
             // 缓冲区指向数据开始的地方
             buf_serial_recv_trimleft(buf_serial_recv_last_find - buf_serial_recv);
-            //buf_serial_recv_show();
+            // buf_serial_recv_show();
             // 计算要接收的数据长度
             static unsigned int remain_data_len;
             remain_data_len = data_len;
@@ -307,30 +312,31 @@ communication:
                         // 计算剩余数据长度
                         remain_data_len -= move_length;
                         // 显示缓冲区内容
-                        //buf_serial_recv_show();
-                        //buf_socket_recv_show();
+                        // buf_serial_recv_show();
+                        buf_socket_recv_show();
                     }
                 }
                 // 切换到其它任务上，防止阻塞
                 STS_DOEVENTS();
             }
-            PRINTF_DEBUG("正在从服务器接收数据 (完成)...");
+            PRINTF_DEBUG("正在从服务器接收数据 (完成)...\n");
         }
     socket_send:
         if (buf_socket_send_wi)
         {
-            PRINTF_DEBUG("正在向服务器发送数据...");
+            PRINTF_DEBUG("正在向服务器发送数据...\n");
+            buf_socket_send_show();
             QUERY_AT(2000, "AT+CIPSEND", ">");
             if (flag_timeout)
                 goto check_connect;
             // 注偷荽 \x1A 侥伙叫断凤
             QUERY_DATA(1000, buf_socket_send, buf_socket_send_wi,
-                       "");                      // buf_serial_recv_find((char*)"") 直接返回
+                       "");                                      // buf_serial_recv_find((char*)"") 直接返回
             QUERY_DATA(8000, "\x1A", strlen("\x1A"), "SEND OK"); // 使用 \x1A 发送数据
             if (flag_timeout)
                 goto check_connect;
             buf_socket_send_wi = 0;
-            PRINTF_DEBUG("数据发送完成");
+            PRINTF_DEBUG("数据发送完成\n");
         }
         STS_DOEVENTS();
     }

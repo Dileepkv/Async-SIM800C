@@ -22,6 +22,7 @@
 
 #include "printf.h"
 #include "serial.h"
+#include <Arduino.h>
 extern "C"
 {
 
@@ -40,24 +41,26 @@ extern "C"
 
 void setup()
 {
-    PRINTF_INFO("init serial...");
+	pinMode(12, OUTPUT);
+
+    PRINTF_DEBUG("init serial...\n");
     init_serial();
-    PRINTF_INFO("init done");
+    PRINTF_INFO("init done..\n");
 }
 
 void loop()
 {
     // 理论上任务顺序不分先后, TODO: 需要验证
-    PRINTF_DEBUG("task_serial");
+    PRINTF_DEBUG("task_serial\n");
     task_serial();
-    PRINTF_DEBUG("task_communicate");
+    PRINTF_DEBUG("task_communicate\n");
     task_sim800c();
-    PRINTF_DEBUG("task_work");
+    PRINTF_DEBUG("task_work\n");
     task_work();
-    // PRINTF_DEBUG( "task_hardware");
+    // PRINTF_DEBUG( "task_hardware\n");
     // task_hardware();
-    // PRINTF_DEBUG( "task_handle_msg");
+    // PRINTF_DEBUG( "task_handle_msg\n");
     // task_handle_msg();
-    PRINTF_DEBUG("task_heartbeat");
+    PRINTF_DEBUG("task_heartbeat\n");
     task_heartbeat();
 }
