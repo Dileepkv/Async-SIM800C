@@ -8,7 +8,7 @@ void task_heartbeat()
 	static long timer = 0;
 	while (1)
 	{
-		printf("[DEBUG   ] �����߳�\n");
+		printf("[DEBUG   ] 心跳线程\n");
 		DELAY(timer, 5000);
 	}
 	STS_ENDED();

@@ -1,6 +1,8 @@
 #include "serial_arduino.h"
 #pragma once
 
+#ifdef _ARDUINO_
+
 #include <SoftwareSerial.h>
 SoftwareSerial mySerial(2, 3); // RX=2,TX=3
 void init_serial()
@@ -24,3 +26,5 @@ uint serial_read(char *buffer, uint buffer_length)
 	}
 	return read_len;
 }
+
+#endif
