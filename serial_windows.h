@@ -4,8 +4,12 @@
 // #include <winnt.h>
 #pragma once
 
+#ifdef _WINDOWS_
+
 #define DEBUG_SERIAL_PORT "COM5"
 
 void init_serial();
 unsigned int serial_write(char *buffer, unsigned int buffer_length);
 unsigned int serial_read(char *buffer, unsigned int buffer_length);
+
+#endif

@@ -1,17 +1,18 @@
-// ÖÐÎÄ
+// ï¿½ï¿½ï¿½ï¿½
 #include "task_sim800c.h"
-#include "../lib/sno_task_scheduler.h"
+#include "sno_task_scheduler.h"
 #include "task_serial.h"
 #include <stdlib.h>
 #include <string.h>
 
+#pragma once
 char buf_socket_send[128] = {0};
 char buf_socket_recv[128] = {0};
 THIS_IS_A_FIFO_BUFFER(buf_socket_send);
 THIS_IS_A_FIFO_BUFFER(buf_socket_recv);
 
 /**
- * ÅäÖÃÁ¬½Ó·þÎñÆ÷
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó·ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 int flag_socket_close = 0;
 int flag_socket_ready = 0;
@@ -26,7 +27,7 @@ inline void config_server(char *_protocol, char *_host, char *_port)
 }
 
 /**
- * Ä£¿éÍ¨ÐÅÖ¸Áî
+ * Ä£ï¿½ï¿½Í¨ï¿½ï¿½Ö¸ï¿½ï¿½
  */
 long long timer_query = 0;
 int flag_timeout = 0;
@@ -40,7 +41,7 @@ char *buf_serial_recv_last_find = NULL;
     SETTIMER(timer_query);                                  \
     STS_WAIT_UNTIL(                                         \
         (flag_timeout = TIMEOUT(timer_query, timeout)) ||   \
-        (buf_serial_recv_last_find = buf_serial_recv_find((char *)find_str)));
+        (buf_serial_recv_last_find = buf_serial_recv_find((char*)(char *)find_str)));
 
 #define QUERY_DATA(timeout, data, len, find_str)          \
     buf_serial_recv_clrbuf();                             \
@@ -52,10 +53,10 @@ char *buf_serial_recv_last_find = NULL;
     SETTIMER(timer_query);                                \
     STS_WAIT_UNTIL(                                       \
         (flag_timeout = TIMEOUT(timer_query, timeout)) || \
-        (buf_serial_recv_last_find = buf_serial_recv_find((char *)find_str)));
+        (buf_serial_recv_last_find = buf_serial_recv_find((char*)(char *)find_str)));
 
 /**
- * Ñ­»·ÈÎÎñ
+ * Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 void task_sim800c()
 {
@@ -63,17 +64,17 @@ void task_sim800c()
 
 check_at:
     printf("[INFO    ]"
-           "ÕýÔÚAT(°¬ÌØ)Ä£¿é...\n");
+           "ï¿½ï¿½ï¿½ï¿½AT(ï¿½ï¿½ï¿½ï¿½)Ä£ï¿½ï¿½...\n");
     QUERY_AT(1000, "AT", "OK");
     if (flag_timeout)
-        goto check_at; //²âÊÔATÍ¨ÐÅ×´¿ö
+        goto check_at; //ï¿½ï¿½ï¿½ï¿½ATÍ¨ï¿½ï¿½×´ï¿½ï¿½
 
 close_echo:
     printf("[INFO    ]"
-           "ÕýÔÚ¹Ø±Õ»ØÏÔ...\n");
+           "ï¿½ï¿½ï¿½Ú¹Ø±Õ»ï¿½ï¿½ï¿½...\n");
     QUERY_AT(1000, "ATE0", "OK");
     if (flag_timeout)
-        goto check_at; //¹Ø±ÕÒÆ¶¯³¡¾°
+        goto check_at; //ï¿½Ø±ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½
 
 ready:
     if (flag_server_configured)
@@ -85,19 +86,19 @@ ready:
 
 register_network:
     printf("[INFO    ]"
-           "ÕýÔÚ×¢²áµ½ÍøÂç...\n");
+           "ï¿½ï¿½ï¿½ï¿½×¢ï¿½áµ½ï¿½ï¿½ï¿½ï¿½...\n");
     QUERY_AT(1000, "AT+CREG?", "+CREG: ");
     if (flag_timeout)
-        goto check_at; //¹Ø±ÕÒÆ¶¯³¡¾°
-    // TODO: µÍËÙÁ¬½Ó°²È«¼ì²é
+        goto check_at; //ï¿½Ø±ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½
+    // TODO: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó°ï¿½È«ï¿½ï¿½ï¿½
     do
     {
-        char *lastFind = Find("+CREG: ");
+        char *lastFind = buf_serial_recv_find((char*)"+CREG: ");
         if (strlen(lastFind) > 9 && (lastFind[9] == '1' || lastFind[9] == '5'))
         {
             printf("[INFO    ]"
-                   "ÒÑÁ¬½Óµ½ÍøÂç£¬%s, Ä£Ê½<%3.3s>\n",
-                   lastFind[9] == '1' ? "±¾µØÁ÷Á¿" : "ÂþÓÎÁ÷Á¿", lastFind + 7);
+                   "ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ç£¬%s, Ä£Ê½<%3.3s>\n",
+                   lastFind[9] == '1' ? "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" : "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", lastFind + 7);
             goto check_connect;
         }
         else
@@ -110,43 +111,43 @@ connect_to_server:
     flag_socket_ready = 0;
 
     printf("[INFO    ]"
-           "ÕýÔÚ¹Ø±ÕÒÆ¶¯³¡¾°...\n");
+           "ï¿½ï¿½ï¿½Ú¹Ø±ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½...\n");
     QUERY_AT(2000, "AT+CIPSHUT", "SHUT OK");
     if (flag_timeout)
         goto register_network;
 
     printf("[INFO    ]"
-           "ÕýÔÚÉèÖÃGPRSÒÆ¶¯Ì¨Àà±ðÎªB,Ö§³Ö°ü½»»»ºÍÊý¾Ý½»»»...\n");
+           "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½GPRSï¿½Æ¶ï¿½Ì¨ï¿½ï¿½ï¿½ÎªB,Ö§ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý½ï¿½ï¿½ï¿½...\n");
     QUERY_AT(2000, "AT+CGCLASS=\"B\"", "OK");
     if (flag_timeout)
         goto register_network;
 
     printf("[INFO    ]"
-           "ÕýÔÚÉèÖÃPDPÉÏÏÂÎÄ,»¥ÁªÍø½ÓÐ­Òé,½ÓÈëµãµÈÐÅÏ¢...\n");
+           "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½PDPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð­ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢...\n");
     QUERY_AT(2000, "AT+CGDCONT=1,\"IP\",\"CMNET\"", "OK");
     if (flag_timeout)
         goto register_network;
 
     printf("[INFO    ]"
-           "ÕýÔÚ¸½×ÅGPRSÒµÎñ...\n");
+           "ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½GPRSÒµï¿½ï¿½...\n");
     QUERY_AT(2000, "AT+CGATT=1", "OK");
     if (flag_timeout)
         goto register_network;
 
     printf("[INFO    ]"
-           "ÕýÔÚÉèÖÃÎªGPRSÁ¬½ÓÄ£Ê½...\n");
+           "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªGPRSï¿½ï¿½ï¿½ï¿½Ä£Ê½...\n");
     QUERY_AT(2000, "AT+CIPCSGP=1,\"CMNET\"", "OK");
     if (flag_timeout)
         goto register_network;
 
     printf("[INFO    ]"
-           "ÕýÔÚÉèÖÃ½ÓÊÕÊý¾ÝÏÔÊ¾IPÍ·(·½±ãÅÐ¶ÏÊý¾ÝÀ´Ô´,½öÔÚµ¥Â·Á¬½ÓÓÐÐ§)...\n");
+           "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾IPÍ·(ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´,ï¿½ï¿½ï¿½Úµï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§)...\n");
     QUERY_AT(2000, "AT+CIPHEAD=1", "OK");
     if (flag_timeout)
         goto register_network;
 
     printf("[INFO    ]"
-           "ÕýÔÚÁ¬½Óµ½·þÎñÆ÷ {'Ð­Òé': '%s', 'Ö÷»ú': '%s', '¶Ë¿Ú': '%s'}\n",
+           "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ {'Ð­ï¿½ï¿½': '%s', 'ï¿½ï¿½ï¿½ï¿½': '%s', 'ï¿½Ë¿ï¿½': '%s'}\n",
            protocol, host, port);
     QUERY_DATA(0, "AT+CIPSTART=", strlen("AT+CIPSTART="), "");
     QUERY_DATA(0, protocol, strlen(protocol), "");
@@ -155,7 +156,7 @@ connect_to_server:
     QUERY_DATA(0, ",", strlen(","), "");
     QUERY_DATA(0, port, strlen(port), "");
     QUERY_AT(3000, "\r", "OK");
-    // 3000ms ÊÇµÈ´ýÄ£¿éÏìÓ¦µÄÊ±¼ä
+    // 3000ms ï¿½ÇµÈ´ï¿½Ä£ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½Ê±ï¿½ï¿½
     static int timer_connecting = 0;
     SETTIMER(timer_connecting);
     if (flag_timeout)
@@ -165,7 +166,7 @@ check_connect:
     if (flag_socket_close)
     {
         printf("[INFO    ]"
-               "ÕýÔÚ¶Ï¿ªÁ¬½Ó...\n");
+               "ï¿½ï¿½ï¿½Ú¶Ï¿ï¿½ï¿½ï¿½ï¿½ï¿½...\n");
         QUERY_AT(1000, "AT+CIPCLOSE", "OK");
         flag_socket_close = 0;
         flag_socket_ready = 0;
@@ -173,7 +174,7 @@ check_connect:
     }
 
     printf("[INFO    ]"
-           "ÕýÔÚ²é¿´ÐÅºÅÖÊÁ¿...\n");
+           "ï¿½ï¿½ï¿½Ú²é¿´ï¿½Åºï¿½ï¿½ï¿½ï¿½ï¿½...\n");
     QUERY_AT(1000, "AT+CSQ", "+CSQ: ");
     if (flag_timeout)
         goto check_at;
@@ -181,152 +182,157 @@ check_connect:
 
     sscanf(buf_serial_recv_last_find + 6, "%d,%d", &xhzl1, &xhzl2);
     printf("[INFO    ]"
-           "ÐÅºÅÖÊÁ¿<%d, %d>\n",
+           "ï¿½Åºï¿½ï¿½ï¿½ï¿½ï¿½<%d, %d>\n",
            xhzl1, xhzl2);
 
     printf("[INFO    ]"
-           "ÕýÔÚÈ·ÈÏÁ¬½ÓÖÊÁ¿...\n");
+           "ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½...\n");
     QUERY_AT(1000, "AT+CIPSTATUS", "OK");
     if (flag_timeout)
         goto check_at;
-    if (Find("CONNECT OK"))
+    if (buf_serial_recv_find((char*)"CONNECT OK"))
     {
         printf("[INFO    ]"
-               "È·ÈÏÒÑÁ¬½Óµ½·þÎñÆ÷\n");
+               "È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n");
         flag_socket_ready = 1;
         goto communication;
     }
-    if (Find("CONNECTING"))
+    if (buf_serial_recv_find((char*)"CONNECTING"))
     {
-        // 8Ãë»¹Ã»Á¬ÉÏ¾ÍÖØÁ¬
+        // 8ï¿½ë»¹Ã»ï¿½ï¿½ï¿½Ï¾ï¿½ï¿½ï¿½ï¿½ï¿½
         if (TIMEOUT(timer_connecting, 8000))
         {
             printf("[WRANING ]"
-                   "Á¬½Ó·þÎñÆ÷³¬Ê±£¬³¢ÊÔÖØÐÂÁ¬½Ó\n");
+                   "ï¿½ï¿½ï¿½Ó·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n");
             goto connect_to_server;
         }
         printf("[INFO    ]"
-               "ÕýÔÚÁ¬½Ó\n");
+               "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n");
         goto check_connect;
     }
-    if (Find("ERROR"))
+    if (buf_serial_recv_find((char*)"ERROR"))
     {
         printf("[ERROR   ]"
-               "Á¬½Ó´íÎó\n");
+               "ï¿½ï¿½ï¿½Ó´ï¿½ï¿½ï¿½\n");
         goto connect_to_server;
     }
-    if (Find("TCP CLOSED"))
+    if (buf_serial_recv_find((char*)"TCP CLOSED"))
     {
         printf("[ERROR   ]"
-               "Á¬½ÓÒÑ¶Ï¿ª\n");
+               "ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¶Ï¿ï¿½\n");
         flag_socket_ready = 0;
         goto connect_to_server;
     }
-    if (Find("IP INITIAL"))
+    if (buf_serial_recv_find((char*)"IP INITIAL"))
     {
         printf("[INFO    ]"
-               "ÉÐÎ´»ñÈ¡ÍøÂçIP\n");
+               "ï¿½ï¿½Î´ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½IP\n");
         goto connect_to_server;
     }
-    if (Find("IP CONFIG"))
+    if (buf_serial_recv_find((char*)"IP CONFIG"))
     {
         printf("[INFO    ]"
-               "ÕýÔÚ»ñÈ¡ÍøÂçIP\n");
+               "ï¿½ï¿½ï¿½Ú»ï¿½È¡ï¿½ï¿½ï¿½ï¿½IP\n");
         goto check_connect;
     }
 
     printf("[INFO    ]"
-           "Î´ÄÜÈ·ÈÏÁ¬½Ó×´Ì¬£¬³¢ÊÔÖØÐÂÁ¬½Ó·þÎñÆ÷\n");
+           "Î´ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó·ï¿½ï¿½ï¿½ï¿½ï¿½\n");
     goto connect_to_server;
 
 communication:
     while (1)
     {
     watch_status:
-        if (buf_serial_recv_find("CLOSED"))
+        if (buf_serial_recv_find((char*)"CLOSED"))
         {
             printf("[DEBUG   ]"
-                    "Á¬½Ó±»·þÎñÆ÷¶Ï¿ª...\n");
+                   "ï¿½ï¿½ï¿½Ó±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½...\n");
             flag_socket_ready = 0;
-            // ×Ô¶¯ÖØÁ¬
+            // ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½
             goto connect_to_server;
         }
     socket_recv:
-        buf_serial_recv_last_find = buf_serial_recv_find("+IPD,");
+        buf_serial_recv_last_find = buf_serial_recv_find((char*)"+IPD,");
         if (buf_serial_recv_last_find)
         {
             PRINT_LINE();
-            // ÊÕµ½µÄÊý¾Ý³¤¶È
+            // ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
             static unsigned int data_len;
             sscanf(buf_serial_recv_last_find + 5, "%d", &data_len);
-            // Êý¾ÝÆðÊ¼Î»ÖÃ
-            // TODO: °²È«¼ì²é£ºÈç¹ûÃ»ÓÐÕÒµ½Ã°ºÅ
-            char *posColom = strstr(buf_serial_recv_last_find, ":");
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼Î»ï¿½ï¿½
+            // TODO: ï¿½ï¿½È«ï¿½ï¿½é£ºï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Òµï¿½Ã°ï¿½ï¿½
+            char *posColom;
+            posColom = strstr(buf_serial_recv_last_find, ":");
             buf_serial_recv_last_find = posColom + 1;
-            // ´Ó»º³åÇøÀïÒÆ³ýÊý¾ÝÖ®Ç°µÄ×Ö·û
+            // ï¿½Ó»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ³ï¿½ï¿½ï¿½ï¿½ï¿½Ö®Ç°ï¿½ï¿½ï¿½Ö·ï¿½
             buf_serial_recv_trimleft(buf_serial_recv_last_find - buf_serial_recv);
             buf_serial_recv_show();
             PRINT_LINE();
-            // ¿ªÊ¼½ÓÊÕÊý¾Ý
+            // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             static unsigned int remain_data_len;
             remain_data_len = data_len;
-            // ´Ó buf_serial_recv ×ªÒÆ¶ÔÓ¦³¤¶ÈµÄÊý¾Ýµ½ buf_socket_recv
+            // ï¿½ï¿½ buf_serial_recv ×ªï¿½Æ¶ï¿½Ó¦ï¿½ï¿½ï¿½Èµï¿½ï¿½ï¿½ï¿½Ýµï¿½ buf_socket_recv
             while (remain_data_len)
             {
-                // Êä³öµ÷ÊÔÐÅÏ¢
-                printf("[DEBUG   ]"
-                       "´Ó·þÎñÆ÷½ÓÊÕÊý¾Ý (%d/%d bytes)...\n",
-                       data_len - remain_data_len, data_len);
-                // ¸üÏêÏ¸µÄµ÷ÊÔÐÅÏ¢
-                if (0)
                 {
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
                     printf("[DEBUG   ]"
-                           "buf_serial_recv_read_pipe_len: %d\n",
-                           buf_serial_recv_read_pipe_len());
-                    printf("[DEBUG   ]"
-                           "buf_socket_recv_write_pipe_len: %d\n",
-                           buf_socket_recv_write_pipe_len());
+                           "ï¿½Ó·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (%d/%d bytes)...\n",
+                           data_len - remain_data_len, data_len);
+                    // ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+                    if (0)
+                    {
+                        printf("[DEBUG   ]"
+                               "buf_serial_recv_read_pipe_len: %d\n",
+                               buf_serial_recv_read_pipe_len());
+                        printf("[DEBUG   ]"
+                               "buf_socket_recv_write_pipe_len: %d\n",
+                               buf_socket_recv_write_pipe_len());
+                    }
+
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ÆµÄ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö½ï¿½ï¿½ï¿½
+                    unsigned int move_length;
+                    move_length = MIN(MIN(buf_serial_recv_read_pipe_len(),
+                                          buf_socket_recv_write_pipe_len()),
+                                      remain_data_len);
+                    if (move_length)
+                    {
+                        // ×ªï¿½Æ¶ï¿½Ó¦ï¿½Ö½ï¿½ï¿½ï¿½
+                        buf_socket_recv_write(buf_serial_recv_read_pipe(), move_length);
+                        // ï¿½ï¿½ sim800c ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ³ï¿½ï¿½Ñ¾ï¿½×ªï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½
+                        buf_serial_recv_trimleft(move_length);
+                        // ï¿½ï¿½ï¿½ï¿½Ê£ï¿½ï¿½ï¿½ï¿½Òª×ªï¿½Æµï¿½ï¿½Ö½ï¿½ï¿½ï¿½
+                        remain_data_len -= move_length;
+                        // ï¿½ï¿½ï¿½ï¿½
+                        buf_serial_recv_show();
+                        buf_socket_recv_show();
+                    }
                 }
-                // ¼ÆËã¿ÉÒÔ×ªÒÆµÄ»º³åÇø×Ö½ÚÊý
-                unsigned int move_length = MIN(MIN(buf_serial_recv_read_pipe_len(),
-                                                   buf_socket_recv_write_pipe_len()),
-                                               remain_data_len);
-                if (move_length)
-                {
-                    // ×ªÒÆ¶ÔÓ¦×Ö½ÚÊý
-                    buf_socket_recv_write(buf_serial_recv_read_pipe(), move_length);
-                    // ´Ó sim800c »º³åÇøÀïÒÆ³ýÒÑ¾­×ªÒÆµÄÊý¾Ý
-                    buf_serial_recv_trimleft(move_length);
-                    // ¼ÆËãÊ£ÓàÐèÒª×ªÒÆµÄ×Ö½ÚÊý
-                    remain_data_len -= move_length;
-                    // µ÷ÊÔ
-                    buf_serial_recv_show();
-                    buf_socket_recv_show();
-                }
-                // ·ÀÖ¹×èÈû
+                // ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½
                 STS_DOEVENTS();
             }
             printf("[DEBUG   ]"
-                   "´Ó·þÎñÆ÷½ÓÊÕÊý¾Ý (Íê³É)...\n",
+                   "ï¿½Ó·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½)...\n",
                    data_len - remain_data_len, data_len);
         }
     socket_send:
         if (buf_socket_send_wi)
         {
             printf("[DEBUG   ]"
-                   "ÕýÔÚ¸ø·þÎñÆ÷·¢ËÍÊý¾Ý...\n");
+                   "ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½...\n");
             QUERY_AT(2000, "AT+CIPSEND", ">");
             if (flag_timeout)
                 goto check_connect;
-            // ×¢ÒâÕâÀïÈç¹û·¢ËÍµÄÄÚÈÝ´øÓÐ \x1A µÄ»°»áÖÐ¶Ï·¢ËÍ
+            // ×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½ \x1A ï¿½Ä»ï¿½ï¿½ï¿½ï¿½Ð¶Ï·ï¿½ï¿½ï¿½
             QUERY_DATA(1000, buf_socket_send, buf_socket_send_wi,
-                       "");                      // Find("") Ö±½Ó·µ»Ø
-            QUERY_AT(8000, "\x1A\0", "SEND OK"); // Ê¹ÓÃ \x1A ½áÊøÊý¾Ý·¢ËÍ
+                       "");                      // buf_serial_recv_find((char*)"") Ö±ï¿½Ó·ï¿½ï¿½ï¿½
+            QUERY_AT(8000, "\x1A\0", "SEND OK"); // Ê¹ï¿½ï¿½ \x1A ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý·ï¿½ï¿½ï¿½
             if (flag_timeout)
                 goto check_connect;
             buf_socket_send_wi = 0;
             printf("[DEBUG   ]"
-                   "Êý¾Ý·¢ËÍ³É¹¦£¡\n");
+                   "ï¿½ï¿½ï¿½Ý·ï¿½ï¿½Í³É¹ï¿½ï¿½ï¿½\n");
         }
         STS_DOEVENTS();
     }

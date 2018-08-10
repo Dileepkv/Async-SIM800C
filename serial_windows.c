@@ -1,5 +1,6 @@
+#ifdef _WINDOWS_
 #include "serial_windows.h"
-
+#pragma once
 #include <windows.h>
 HANDLE hCom;
 
@@ -7,7 +8,7 @@ void init_serial()
 {
 	hCom = CreateFile(
 		TEXT(DEBUG_SERIAL_PORT),	  //�����ļ�
-		GENERIC_READ | GENERIC_WRITE, //�����
+		GENERIC_READ | GENERIC_WRITE, //�����?
 		0,							  //ָ���������ԣ����ڴ��ڲ��ܹ������Ըò�������Ϊ0
 		NULL,						  //
 		OPEN_EXISTING,				  //�򿪶����Ǵ���
@@ -24,11 +25,11 @@ void init_serial()
 		printf("[DEBUG   ]" DEBUG_SERIAL_PORT "�򿪳ɹ���\n");
 	}
 
-	SetupComm(hCom, 1024, 1024); //���뻺����������������Ĵ�С����1024
+	SetupComm(hCom, 1024, 1024); //���뻺����������������Ĵ�С����?1024
 	/*********************************��ʱ����**************************************/
 	COMMTIMEOUTS TimeOuts;
 	//�趨����ʱ
-	TimeOuts.ReadIntervalTimeout = MAXDWORD; //�����ʱ
+	TimeOuts.ReadIntervalTimeout = MAXDWORD; //������?
 	TimeOuts.ReadTotalTimeoutMultiplier = 0; //��ʱ��ϵ��
 	TimeOuts.ReadTotalTimeoutConstant = 0;   //��ʱ�䳣��
 	//�趨д��ʱ
@@ -48,7 +49,7 @@ void init_serial()
 
 unsigned int serial_write(char *buffer, unsigned int buffer_length)
 {
-	DWORD wCount; // ʵ��д����ֽ���
+	DWORD wCount; // ʵ��д����ֽ���?
 	unsigned int bWriteStat = WriteFile(hCom, buffer, buffer_length, &wCount, NULL);
 	if (!bWriteStat)
 	{
@@ -62,7 +63,7 @@ unsigned int serial_write(char *buffer, unsigned int buffer_length)
 unsigned int serial_read(char *buffer, unsigned int buffer_length)
 {
 	DWORD wCount; //ʵ�ʶ�ȡ���ֽ���
-	// PurgeComm(hCom, PURGE_TXCLEAR | PURGE_RXCLEAR); //��ջ�����
+	// PurgeComm(hCom, PURGE_TXCLEAR | PURGE_RXCLEAR); //��ջ�����?
 	unsigned int bReadStat = ReadFile(hCom, buffer, buffer_length, &wCount, NULL);
 	if (!bReadStat)
 	{
@@ -77,3 +78,5 @@ unsigned int serial_read(char *buffer, unsigned int buffer_length)
 
 
 #undef DEBUG_SERIAL_PORT
+
+#endif

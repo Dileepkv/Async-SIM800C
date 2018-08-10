@@ -3,6 +3,7 @@
 #define ARDBUFFER 16
 #include <Arduino.h>
 #include <stdarg.h>
+//#include <Serial.h>
 int ardprintf(const char *str, ...)
 {
 	int i, count = 0, j = 0, flag = 0;

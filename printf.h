@@ -6,6 +6,6 @@
 
 #ifdef _ARDUINO_
 #include "ardprintf.h"
-#include "ardprintf.c"
+//#include "ardprintf.c"
 #define printf ardprintf
 #endif

@@ -1,4 +1,5 @@
 #include "serial_arduino.h"
+#pragma once
 
 #include <SoftwareSerial.h>
 SoftwareSerial mySerial(2, 3); // RX=2,TX=3

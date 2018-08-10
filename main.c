@@ -16,13 +16,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#define _WINDOWS_
-#include "lib/common.h"
-#include "lib/serial.h"
-#include "tasks/task_heartbeat.h"
-#include "tasks/task_serial.h"
-#include "tasks/task_sim800c.h"
-#include "tasks/task_work.h"
+#include "common.h"
+#include "serial.h"
+#include "printf.h"
+#include "task_heartbeat.h"
+#include "task_serial.h"
+#include "task_sim800c.h"
+#include "task_work.h"
+
+
+// hack...
+#ifdef _WINDOWS_
+#include "serial_windows.c"
+#endif
+
+#ifdef _ARDUINO_
+#include "serial_arduino.c"
+#endif
+
+#include "sno_fifo_buffer.c"
+#include "task_heartbeat.c"
+#include "task_serial.c"
+#include "task_sim800c.c"
+#include "task_work.c"
+
 
 void setup()
 {
@@ -60,11 +77,3 @@ void main()
     }
 }
 #endif
-
-// hack...
-#include "lib/serial_windows.c"
-#include "lib/sno_fifo_buffer.c"
-#include "tasks/task_heartbeat.c"
-#include "tasks/task_serial.c"
-#include "tasks/task_sim800c.c"
-#include "tasks/task_work.c"

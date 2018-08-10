@@ -4,7 +4,8 @@
  */
 #include "sno_fifo_buffer.h"
 #include "common.h"
-
+#include <string.h>
+#pragma once
 /**
  *  缓冲区定义
  *  以后升级环形缓冲区才用得到ri
@@ -13,12 +14,12 @@
     uint BUFFER##_wi = 0;                                                 \
     uint BUFFER##_ri = 0;                                                 \
     /** BASE FUNCTION */                                                  \
-    uint BUFFER##_read(unsigned char *buffer, uint buffer_len)            \
+    uint BUFFER##_read(char *buffer, uint buffer_len)            \
     {                                                                     \
         return fifo_buffer_read(BUFFER, &(BUFFER##_wi), &(BUFFER##_ri),   \
                                 ARR_LEN(BUFFER), buffer, buffer_len);     \
     }                                                                     \
-    uint BUFFER##_write(unsigned char *buffer, uint buffer_len)           \
+    uint BUFFER##_write(char *buffer, uint buffer_len)           \
     {                                                                     \
         return fifo_buffer_write(BUFFER, &(BUFFER##_wi), &(BUFFER##_ri),  \
                                  ARR_LEN(BUFFER), buffer, buffer_len);    \
@@ -29,7 +30,7 @@
         return fifo_buffer_clrbuf(BUFFER, &(BUFFER##_wi), &(BUFFER##_ri), \
                                   ARR_LEN(BUFFER));                       \
     }                                                                     \
-    inline unsigned char *(BUFFER##_find)(unsigned char *str)             \
+    inline char *(BUFFER##_find)(char *str)             \
     {                                                                     \
         return fifo_buffer_find(BUFFER, &(BUFFER##_wi), &(BUFFER##_ri),   \
                                 ARR_LEN(BUFFER), str);                    \
@@ -40,7 +41,7 @@
         show_repr(BUFFER, BUFFER##_wi);                                   \
         printf("'\n");                                                    \
     }                                                                     \
-    inline unsigned char *BUFFER##_read_pipe(void)                        \
+    inline char *BUFFER##_read_pipe(void)                        \
     {                                                                     \
         return BUFFER + BUFFER##_ri;                                      \
     }                                                                     \
@@ -51,7 +52,7 @@
         uint remain_len = buf_len - used_len;                             \
         return used_len;                                                  \
     }                                                                     \
-    inline unsigned char *BUFFER##_write_pipe(void)                       \
+    inline char *BUFFER##_write_pipe(void)                       \
     {                                                                     \
         return BUFFER + BUFFER##_wi;                                      \
     }                                                                     \

@@ -1,14 +1,14 @@
 #include "task_heartbeat.h"
-#include "../lib/timer.h"
-#include "../lib/common.h"
-
+#include "timer.h"
+#include "common.h"
+#pragma once
 void task_heartbeat()
 {
 	STS_START();
 	static long timer = 0;
 	while (1)
 	{
-		printf("[DEBUG   ] ÐÄÌøÏß³Ì\n");
+		printf("[DEBUG   ] ï¿½ï¿½ï¿½ï¿½ï¿½ß³ï¿½\n");
 		DELAY(timer, 5000);
 	}
 	STS_ENDED();

@@ -1,6 +1,7 @@
 #ifdef _WINDOWS_
 #include "serial_windows.h"
-#else
+#endif
+#ifdef _ARDUINO_
 #include "serial_arduino.h"
 #endif
 

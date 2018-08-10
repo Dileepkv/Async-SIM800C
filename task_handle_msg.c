@@ -1,5 +1,5 @@
-#include "handle_msg.h"
-
+#include "task_handle_msg.h"
+#pragma once
 void task_handle_msg()
 {
 	// STS_START();
