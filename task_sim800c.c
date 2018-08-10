@@ -106,7 +106,7 @@ register_network:
             goto register_network;
         }
     } while (0);
-connect_to_server:
+socket_connect_to_server:
 
     flag_socket_ready = 0;
 
@@ -204,7 +204,7 @@ check_connect:
         {
             printf("[WRANING ]"
                    "接凤时\n");
-            goto connect_to_server;
+            goto socket_connect_to_server;
         }
         printf("[INFO    ]"
                "\n");
@@ -214,20 +214,20 @@ check_connect:
     {
         printf("[ERROR   ]"
                "接达\n");
-        goto connect_to_server;
+        goto socket_connect_to_server;
     }
     if (buf_serial_recv_find((char*)"TCP CLOSED"))
     {
         printf("[ERROR   ]"
                "窖断匡\n");
         flag_socket_ready = 0;
-        goto connect_to_server;
+        goto socket_connect_to_server;
     }
     if (buf_serial_recv_find((char*)"IP INITIAL"))
     {
         printf("[INFO    ]"
                "未取IP\n");
-        goto connect_to_server;
+        goto socket_connect_to_server;
     }
     if (buf_serial_recv_find((char*)"IP CONFIG"))
     {
@@ -238,7 +238,7 @@ check_connect:
 
     printf("[INFO    ]"
            "未确状态接凤\n");
-    goto connect_to_server;
+    goto socket_connect_to_server;
 
 communication:
     while (1)
@@ -250,7 +250,7 @@ communication:
                    "接憋较匡...\n");
             flag_socket_ready = 0;
             // 皆讹
-            goto connect_to_server;
+            goto socket_connect_to_server;
         }
     socket_recv:
         buf_serial_recv_last_find = buf_serial_recv_find((char*)"+IPD,");

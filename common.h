@@ -1,9 +1,9 @@
-#include "DEBUG.h"
 #include "printf.h"
-#include <stdlib.h>
+
+
+
 #pragma once
 
-typedef unsigned int uint;
 typedef unsigned int uint;
 
 #define MAX(X, Y)            \

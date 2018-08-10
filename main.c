@@ -16,52 +16,63 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#ifndef _ARDUINO_
+#define _WINDOWS_
+#endif
+
 #include "common.h"
 #include "serial.h"
-#include "printf.h"
 #include "task_heartbeat.h"
 #include "task_serial.h"
 #include "task_sim800c.h"
 #include "task_work.h"
 
-
-// hack...
+/**
+ * hack...
+ */
 #ifdef _WINDOWS_
 #include "serial_windows.c"
-#endif
-
-#ifdef _ARDUINO_
-#include "serial_arduino.c"
-#endif
-
 #include "sno_fifo_buffer.c"
 #include "task_heartbeat.c"
 #include "task_serial.c"
 #include "task_sim800c.c"
 #include "task_work.c"
+#endif
 
+#ifdef _ARDUINO_
+//#include "serial_arduino.c"
+#endif
 
+/**
+ * main
+ */
 void setup()
 {
-    printf("[INFO    ]" "init serial...\n");
+    printf("[INFO    ]"
+           "init serial...\n");
     init_serial();
-    printf("[INFO    ]" "init done\n");
+    printf("[INFO    ]"
+           "init done\n");
 }
 
 void loop()
 {
     // 理论上任务顺序不分先后, TODO: 需要验证
-    printf("[DEBUG   ]" "task_serial\n");
+    printf("[DEBUG   ]"
+           "task_serial\n");
     task_serial();
-    printf("[DEBUG   ]" "task_communicate\n");
+    printf("[DEBUG   ]"
+           "task_communicate\n");
     task_sim800c();
-    printf("[DEBUG   ]" "task_work\n");
+    printf("[DEBUG   ]"
+           "task_work\n");
     task_work();
     // printf("[DEBUG   ]" "task_hardware\n");
     // task_hardware();
     // printf("[DEBUG   ]" "task_handle_msg\n");
     // task_handle_msg();
-    printf("[DEBUG   ]" "task_heartbeat\n");
+    printf("[DEBUG   ]"
+           "task_heartbeat\n");
     task_heartbeat();
 }
 // 入口函数
@@ -69,6 +80,8 @@ void loop()
 #include <windows.h>
 void main()
 {
+    // 使用 UTF8 编码的终端
+    system("chcp 65001");
     setup();
     while (1)
     {

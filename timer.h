@@ -2,16 +2,12 @@
 // 提供时间函数
 
 #ifdef _WINDOWS_
-
 #include <windows.h>
 #define NOW() ((unsigned long)GetTickCount())
-
 #endif
 
 #ifdef _ARDUINO_
-
 #define NOW() ((unsigned long)millis())
-
 #endif
 
 #define SETTIMER(timer) \

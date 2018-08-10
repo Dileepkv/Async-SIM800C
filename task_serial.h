@@ -8,5 +8,3 @@ THIS_IS_A_FIFO_BUFFER_DECLARE(buf_serial_recv);
 #endif
 
 void task_serial();
-void clrbuf();
-char *Find(char *str);

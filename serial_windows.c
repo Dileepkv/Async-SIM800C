@@ -1,7 +1,10 @@
 #ifdef _WINDOWS_
 #include "serial_windows.h"
-#pragma once
+#include "printf.h"
 #include <windows.h>
+
+#pragma once
+
 HANDLE hCom;
 
 void init_serial()
