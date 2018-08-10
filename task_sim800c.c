@@ -137,27 +137,27 @@ socket_connect_to_server:
     if (flag_timeout)
         goto register_network;
 
-    PRINTF_DEBUG("正在GPRS狡讹台轿狟,支街帮捷...\n");
+    PRINTF_DEBUG("正在启用 GPRS ...\n");
     QUERY_AT(2000, "AT+CGCLASS=\"B\"", "OK");
     if (flag_timeout)
         goto register_network;
 
-    PRINTF_DEBUG("正在PDP,协议...\n");
+    PRINTF_DEBUG("正在启用 PDP 协议...\n");
     QUERY_AT(2000, "AT+CGDCONT=1,\"IP\",\"CMNET\"", "OK");
     if (flag_timeout)
         goto register_network;
 
-    PRINTF_DEBUG("正在节革GPRS业...\n");
+    PRINTF_DEBUG("正在设置 GPRS 模式...\n");
     QUERY_AT(2000, "AT+CGATT=1", "OK");
     if (flag_timeout)
         goto register_network;
 
-    PRINTF_DEBUG("正在为GPRS模式...\n");
+    PRINTF_DEBUG("正在设置 GPRS 网络...\n");
     QUERY_AT(2000, "AT+CIPCSGP=1,\"CMNET\"", "OK");
     if (flag_timeout)
         goto register_network;
 
-    PRINTF_DEBUG("正在矫示IP头(叫讹源,节碉路效)...\n");
+    PRINTF_DEBUG("正在设置 IP 协议头...\n");
     QUERY_AT(2000, "AT+CIPHEAD=1", "OK");
     if (flag_timeout)
         goto register_network;
