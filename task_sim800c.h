@@ -1,11 +1,12 @@
 #include "sno_fifo_buffer.h"
+#include "task_serial.h"
 #pragma once
 
 
-#ifdef _WINDOWS_
+// #ifdef WINDOWS
 THIS_IS_A_FIFO_BUFFER_DECLARE(buf_socket_send);
 THIS_IS_A_FIFO_BUFFER_DECLARE(buf_socket_recv);
-#endif
+// #endif
 
-void task_sim800c();
-void config_server(char *protocol, char *host, char *port);
+extern void task_sim800c();
+extern void config_server(char *protocol, char *host, char *port);

@@ -1,14 +1,12 @@
 #pragma once
 
-
-#ifdef _WINDOWS_
+#ifdef WINDOWS
 #include <stdio.h>
 #endif
 
+#ifdef ARDUINO
 #include <stdio.h>
-
-#ifdef _ARDUINO_
 #include "ardprintf.h"
-//#include "ardprintf.c"
+//#include "ardprintf.cpp"
 #define printf ardprintf
 #endif

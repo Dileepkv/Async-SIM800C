@@ -1,9 +1,7 @@
-#ifdef _WINDOWS_
+#ifdef WINDOWS
 #include "serial_windows.h"
 #include "printf.h"
 #include <windows.h>
-
-#pragma once
 
 HANDLE hCom;
 

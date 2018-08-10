@@ -1,8 +1,10 @@
+#include <stdlib.h>
 #include "task_serial.h"
 #include "common.h"
+#include "sno_fifo_buffer.h"
+#include "printf.h"
+// 这句放到最后
 #include "serial.h"
-#include <stdlib.h>
-#pragma once
 
 char buf_serial_recv[128] = {0};
 THIS_IS_A_FIFO_BUFFER(buf_serial_recv);

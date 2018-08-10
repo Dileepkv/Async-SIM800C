@@ -1,10 +1,18 @@
+/*
+    This code should be pasted within the files where this function is needed.
+    This function will not create any code conflicts.
+
+    The function call is similar to printf: ardprintf("Test %d %s", 25, "string");
+    To print the '%' character, use '%%'
+    This code was first posted on http://arduino.stackexchange.com/a/201
+*/
 #ifndef ARDPRINTF
 #define ARDPRINTF
 #define ARDBUFFER 16
 #include <Arduino.h>
 #include <stdarg.h>
-//#include <Serial.h>
-int ardprintf(const char *str, ...)
+
+extern "C" int ardprintf(const char *str, ...)
 {
 	int i, count = 0, j = 0, flag = 0;
 	char temp[ARDBUFFER + 1];

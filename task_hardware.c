@@ -1,5 +1,4 @@
 // #include "hardware.h"
-// #pragma once
 
 
 // // 硬件控制线程

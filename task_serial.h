@@ -3,8 +3,8 @@
 
 #pragma once
 
-#ifdef _WINDOWS_
+// #ifdef WINDOWS
 THIS_IS_A_FIFO_BUFFER_DECLARE(buf_serial_recv);
-#endif
+// #endif
 
-void task_serial();
+extern void task_serial();

@@ -1,7 +1,8 @@
 #include "task_heartbeat.h"
 #include "timer.h"
 #include "common.h"
-#pragma once
+#include "printf.h"
+
 void task_heartbeat()
 {
 	STS_START();

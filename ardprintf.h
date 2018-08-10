@@ -8,4 +8,12 @@
 */
 
 #pragma once
-int ardprintf(const char *str, ...);
+
+#ifdef __cplusplus
+extern "C"
+{
+    int ardprintf(const char *str, ...);
+}
+#endif
+
+extern int ardprintf(const char *str, ...);

@@ -13,7 +13,7 @@
                 "C:/MinGW/bin/../lib/gcc/mingw32/6.3.0/include-fixed"
             ],
             "defines": [
-                "_WINDOWS_",
+                "WINDOWS",
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE",

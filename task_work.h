@@ -1,4 +1,4 @@
 
 #pragma once
 
-void task_work();
+extern void task_work();

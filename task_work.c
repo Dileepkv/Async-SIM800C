@@ -1,9 +1,15 @@
 #include "task_work.h"
 #include "sno_task_scheduler.h"
-#include "timer.h"
 #include "task_sim800c.h"
+#include "timer.h"
+#include "common.h"
+#include "printf.h"
 
-#pragma once
+#define WORK_MODE_PHP
+// #define WORK_MODE_PYTHON
+
+extern char buf_socket_recv[];
+extern char buf_socket_send[];
 
 extern int flag_socket_ready;
 int flag_need_send_data;
@@ -16,14 +22,15 @@ void task_work()
 	STS_START();
 	static long timer = 0;
 
+#ifdef WORK_MODE_PHP
 	// 配置sim800c模块的连接动作
-	config_server((char *)"TCP", (char *)"aliyun.snomiao.com", (char *)"80");
 	while (1)
 	{
+		config_server((char *)"TCP", (char *)"aliyun.snomiao.com", (char *)"80");
 		// 等待接通服务器
 		STS_WAIT_UNTIL(flag_socket_ready);
 		// 在 flag_socket_ready 之后，等一会让网络稳定一下
-		// DELAY(timer, 1000);// 算了不等了
+		// DELAY(timer, 1000); // 算了不等了
 
 		// 连接服务器
 		do
@@ -44,7 +51,7 @@ void task_work()
 				do
 				{
 					// 匹配指令
-					char *lastFind = buf_socket_recv_find("PRESS_BUTTON");
+					char *lastFind = buf_socket_recv_find((char*)"PRESS_BUTTON");
 					if (lastFind)
 					{
 						buf_socket_recv_trimleft(lastFind - buf_socket_recv +
@@ -61,6 +68,15 @@ void task_work()
 		} while (0);
 		STS_WAIT_UNTIL(!flag_uuid_sended || !flag_socket_ready);
 		flag_uuid_sended = 0;
+		STS_WAIT_UNTIL(1);
+	}
+#endif
+
+#ifdef WORK_MODE_PYTHON
+	// 配置sim800c模块的连接动作
+	config_server((char *)"TCP", (char *)"aliyun.snomiao.com", (char *)"55946");
+	while (1)
+	{
 		// printf("send..." "GET /im/3724a24a-df43-460d-ae83-924e752c5fb2\r\n");
 		// if (!flag_uuid_sended)
 		// {
@@ -88,8 +104,10 @@ void task_work()
 		// 		flag_uuid_sended = 1;
 		// 	}
 		// }
+		STS_WAIT_UNTIL(!flag_uuid_sended || !flag_socket_ready);
+		flag_uuid_sended = 0;
 		STS_WAIT_UNTIL(1);
 	}
-
+#endif
 	STS_ENDED();
 }

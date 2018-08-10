@@ -1,11 +1,5 @@
-#include "printf.h"
-
-
-
 #pragma once
-
 typedef unsigned int uint;
-
 #define MAX(X, Y)            \
 	({                       \
 		typeof(X) x_ = (X);  \

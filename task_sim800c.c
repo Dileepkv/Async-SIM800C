@@ -2,10 +2,14 @@
 #include "task_sim800c.h"
 #include "sno_task_scheduler.h"
 #include "task_serial.h"
+#include "serial.h"
 #include <stdlib.h>
 #include <string.h>
+#include "timer.h"
+#include "printf.h"
+#include "common.h"
 
-#pragma once
+// 缓冲区定义
 char buf_socket_send[128] = {0};
 char buf_socket_recv[128] = {0};
 THIS_IS_A_FIFO_BUFFER(buf_socket_send);
@@ -32,28 +36,28 @@ inline void config_server(char *_protocol, char *_host, char *_port)
 long long timer_query = 0;
 int flag_timeout = 0;
 char *buf_serial_recv_last_find = NULL;
-#define QUERY_AT(timeout, cmd, find_str)                    \
-    buf_serial_recv_clrbuf();                               \
-    serial_write((char *)(cmd "\r"), sizeof(cmd "\r") - 1); \
-    printf("[DEBUG   ]"                                     \
-           "SEND_CMD: '%s'\n",                              \
-           cmd);                                            \
-    SETTIMER(timer_query);                                  \
-    STS_WAIT_UNTIL(                                         \
-        (flag_timeout = TIMEOUT(timer_query, timeout)) ||   \
-        (buf_serial_recv_last_find = buf_serial_recv_find((char*)(char *)find_str)));
+#define QUERY_AT(timeout, cmd, find_str)                             \
+    buf_serial_recv_clrbuf();                                        \
+    serial_write((char *)(cmd "\r"), sizeof(cmd "\r") - 1);          \
+    printf("[DEBUG   ]"                                              \
+           "SEND_CMD: '%s'\n",                                       \
+           cmd);                                                     \
+    SETTIMER(timer_query);                                           \
+    STS_WAIT_UNTIL((flag_timeout = TIMEOUT(timer_query, timeout)) || \
+                   (buf_serial_recv_last_find =                      \
+                        buf_serial_recv_find((char *)(char *)find_str)));
 
-#define QUERY_DATA(timeout, data, len, find_str)          \
-    buf_serial_recv_clrbuf();                             \
-    serial_write((char *)(data), len);                    \
-    printf("[DEBUG   ]"                                   \
-           "SENDDATA: '");                                \
-    show_repr((char *)(data), len);                       \
-    printf("'\n");                                        \
-    SETTIMER(timer_query);                                \
-    STS_WAIT_UNTIL(                                       \
-        (flag_timeout = TIMEOUT(timer_query, timeout)) || \
-        (buf_serial_recv_last_find = buf_serial_recv_find((char*)(char *)find_str)));
+#define QUERY_DATA(timeout, data, len, find_str)                     \
+    buf_serial_recv_clrbuf();                                        \
+    serial_write((char *)(data), len);                               \
+    printf("[DEBUG   ]"                                              \
+           "SENDDATA: '");                                           \
+    show_repr((char *)(data), len);                                  \
+    printf("'\n");                                                   \
+    SETTIMER(timer_query);                                           \
+    STS_WAIT_UNTIL((flag_timeout = TIMEOUT(timer_query, timeout)) || \
+                   (buf_serial_recv_last_find =                      \
+                        buf_serial_recv_find((char *)(char *)find_str)));
 
 /**
  * 循
@@ -64,14 +68,14 @@ void task_sim800c()
 
 check_at:
     printf("[INFO    ]"
-           "AT 测试...\n");
+           "正在 AT 测试...\n");
     QUERY_AT(1000, "AT", "OK");
     if (flag_timeout)
-        goto check_at; //AT通状
+        goto check_at; // AT通状
 
 close_echo:
     printf("[INFO    ]"
-           "节关闭伙...\n");
+           "正在关闭回显...\n");
     QUERY_AT(1000, "ATE0", "OK");
     if (flag_timeout)
         goto check_at; //截憋狡讹
@@ -93,12 +97,13 @@ register_network:
     // TODO: 接帮全
     do
     {
-        char *lastFind = buf_serial_recv_find((char*)"+CREG: ");
+        char *lastFind = buf_serial_recv_find((char *)"+CREG: ");
         if (strlen(lastFind) > 9 && (lastFind[9] == '1' || lastFind[9] == '5'))
         {
             printf("[INFO    ]"
                    "接碉界，%s, 模式<%3.3s>\n",
-                   lastFind[9] == '1' ? "" : "", lastFind + 7);
+                   lastFind[9] == '1' ? "" : "",
+                   lastFind + 7);
             goto check_connect;
         }
         else
@@ -190,14 +195,14 @@ check_connect:
     QUERY_AT(1000, "AT+CIPSTATUS", "OK");
     if (flag_timeout)
         goto check_at;
-    if (buf_serial_recv_find((char*)"CONNECT OK"))
+    if (buf_serial_recv_find((char *)"CONNECT OK"))
     {
         printf("[INFO    ]"
                "确接碉\n");
         flag_socket_ready = 1;
         goto communication;
     }
-    if (buf_serial_recv_find((char*)"CONNECTING"))
+    if (buf_serial_recv_find((char *)"CONNECTING"))
     {
         // 8诫还没较撅
         if (TIMEOUT(timer_connecting, 8000))
@@ -210,26 +215,26 @@ check_connect:
                "\n");
         goto check_connect;
     }
-    if (buf_serial_recv_find((char*)"ERROR"))
+    if (buf_serial_recv_find((char *)"ERROR"))
     {
         printf("[ERROR   ]"
                "接达\n");
         goto socket_connect_to_server;
     }
-    if (buf_serial_recv_find((char*)"TCP CLOSED"))
+    if (buf_serial_recv_find((char *)"TCP CLOSED"))
     {
         printf("[ERROR   ]"
                "窖断匡\n");
         flag_socket_ready = 0;
         goto socket_connect_to_server;
     }
-    if (buf_serial_recv_find((char*)"IP INITIAL"))
+    if (buf_serial_recv_find((char *)"IP INITIAL"))
     {
         printf("[INFO    ]"
                "未取IP\n");
         goto socket_connect_to_server;
     }
-    if (buf_serial_recv_find((char*)"IP CONFIG"))
+    if (buf_serial_recv_find((char *)"IP CONFIG"))
     {
         printf("[INFO    ]"
                "节伙取IP\n");
@@ -244,7 +249,7 @@ communication:
     while (1)
     {
     watch_status:
-        if (buf_serial_recv_find((char*)"CLOSED"))
+        if (buf_serial_recv_find((char *)"CLOSED"))
         {
             printf("[DEBUG   ]"
                    "接憋较匡...\n");
@@ -253,7 +258,7 @@ communication:
             goto socket_connect_to_server;
         }
     socket_recv:
-        buf_serial_recv_last_find = buf_serial_recv_find((char*)"+IPD,");
+        buf_serial_recv_last_find = buf_serial_recv_find((char *)"+IPD,");
         if (buf_serial_recv_last_find)
         {
             PRINT_LINE();
