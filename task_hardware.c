@@ -5,7 +5,7 @@
 // void task_hardware()
 // {
 // 	STS_START();
-//     static long timer = 0;
+//     static timer_t timer = 0;
 // 	while (1)
 // 	{
 // 		STS_WAIT_UNTIL(flag_press_button);

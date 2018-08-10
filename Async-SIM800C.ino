@@ -20,12 +20,18 @@
 // #include "ardprintf.cpp"
 // #endif
 
-
 #include "printf.h"
 #include "serial.h"
 extern "C"
 {
+
+/**
+ * 我不知道怎么把这堆文件放到 lib、task 这样的文件夹里，当我这样做的时候 Arduino
+ * 的编译就会出问题。希望有人能告诉我怎么办。
+ */
+
 #include "common.h"
+#include "sno_printf_logging.h"
 #include "task_heartbeat.h"
 #include "task_serial.h"
 #include "task_sim800c.h"
@@ -34,76 +40,24 @@ extern "C"
 
 void setup()
 {
-    printf("[INFO    ]"
-           "init serial...\n");
+    PRINTF_INFO("init serial...");
     init_serial();
-    printf("[INFO    ]"
-           "init done\n");
+    PRINTF_INFO("init done");
 }
 
 void loop()
 {
     // 理论上任务顺序不分先后, TODO: 需要验证
-    printf("[DEBUG   ]"
-           "task_serial\n");
+    PRINTF_DEBUG("task_serial");
     task_serial();
-    printf("[DEBUG   ]"
-           "task_communicate\n");
+    PRINTF_DEBUG("task_communicate");
     task_sim800c();
-    printf("[DEBUG   ]"
-           "task_work\n");
+    PRINTF_DEBUG("task_work");
     task_work();
-    // printf("[DEBUG   ]" "task_hardware\n");
+    // PRINTF_DEBUG( "task_hardware");
     // task_hardware();
-    // printf("[DEBUG   ]" "task_handle_msg\n");
+    // PRINTF_DEBUG( "task_handle_msg");
     // task_handle_msg();
-    printf("[DEBUG   ]"
-           "task_heartbeat\n");
+    PRINTF_DEBUG("task_heartbeat");
     task_heartbeat();
 }
-
-/**
- * 我不知道怎么把这堆文件放到文件夹里，当我这样做的时候 Arduino 的编译就会出问题
- */
-
-// #include "main.c"
-
-// #include "common.h"
-// #include "serial.h"
-// #include "task_heartbeat.h"
-// #include "task_serial.h"
-// #include "task_sim800c.h"
-// #include "task_work.h"
-// #include "printf.h"
-// /**
-//  * main
-//  */
-// void setup()
-// {
-//     printf("[INFO    ]"
-//            "init serial...\n");
-//     init_serial();
-//     printf("[INFO    ]"
-//            "init done\n");
-// }
-
-// void loop()
-// {
-//     // 理论上任务顺序不分先后, TODO: 需要验证
-//     printf("[DEBUG   ]"
-//            "task_serial\n");
-//     task_serial();
-//     printf("[DEBUG   ]"
-//            "task_communicate\n");
-//     task_sim800c();
-//     printf("[DEBUG   ]"
-//            "task_work\n");
-//     task_work();
-//     // printf("[DEBUG   ]" "task_hardware\n");
-//     // task_hardware();
-//     // printf("[DEBUG   ]" "task_handle_msg\n");
-//     // task_handle_msg();
-//     printf("[DEBUG   ]"
-//            "task_heartbeat\n");
-//     task_heartbeat();
-// }

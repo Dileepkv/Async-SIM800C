@@ -20,7 +20,7 @@ void task_serial()
 	STS_START();
 	while (1)
 	{
-	recv:
+	// recv:
 		do
 		{
 			int read_len;

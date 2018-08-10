@@ -24,41 +24,38 @@
 #include "common.h"
 #include "printf.h"
 #include "serial.h"
+#include "sno_printf_logging.h"
 #include "task_heartbeat.h"
 #include "task_serial.h"
 #include "task_sim800c.h"
 #include "task_work.h"
 #include <windows.h>
+
 /**
  * main
  */
+
 void setup()
 {
-    printf("[INFO    ]"
-           "init serial...\n");
+    PRINTF_INFO("init serial...\n");
     init_serial();
-    printf("[INFO    ]"
-           "init done\n");
+    PRINTF_INFO("init done\n");
 }
 
 void loop()
 {
     // 理论上任务顺序不分先后, TODO: 需要验证
-    printf("[DEBUG   ]"
-           "task_serial\n");
+    PRINTF_DEBUG("task_serial\n");
     task_serial();
-    printf("[DEBUG   ]"
-           "task_communicate\n");
+    PRINTF_DEBUG("task_communicate\n");
     task_sim800c();
-    printf("[DEBUG   ]"
-           "task_work\n");
+    PRINTF_DEBUG("task_work\n");
     task_work();
-    // printf("[DEBUG   ]" "task_hardware\n");
+    // PRINTF_DEBUG("task_hardware\n");
     // task_hardware();
-    // printf("[DEBUG   ]" "task_handle_msg\n");
+    // PRINTF_DEBUG("task_handle_msg\n");
     // task_handle_msg();
-    printf("[DEBUG   ]"
-           "task_heartbeat\n");
+    PRINTF_DEBUG("task_heartbeat\n");
     task_heartbeat();
 }
 

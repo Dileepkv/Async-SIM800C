@@ -23,7 +23,6 @@
 // #define LOGGING_LEVEL_FATAL
 // #define LOGGING_LEVEL_OFF
 
-
 #include "printf.h"
 
 #ifdef LOGGING_LEVEL_ALL
@@ -31,41 +30,67 @@
 #else
 // NOTHING
 #endif
+
 #ifdef LOGGING_LEVEL_DEBUG
 #define LOGGING_LEVEL_INFO
-#define PRINTF_DEBUG(fmt, ...)                                                 \
-  printf("[DEBUG/%20s:%05d]" fmt "\n", __FILE__, __LINE__, ##__VA_ARGS__)
+#define PRINTF_DEBUG(fmt, ...)      \
+    do                              \
+    {                               \
+        printf("[DEBUG]");          \
+        printf(fmt, ##__VA_ARGS__); \
+    } while (0)
 #else
-#define PRINTF_DEBUG(fmt, ...)
+#define PRINTF_DEBUG(fmt, ...) ({})
 #endif
+
 #ifdef LOGGING_LEVEL_INFO
 #define LOGGING_LEVEL_WARN
-#define PRINTF_INFO(fmt, ...)                                                  \
-  printf("[INFO /%20s:%05d]" fmt "\n", __FILE__, __LINE__, ##__VA_ARGS__)
+#define PRINTF_INFO(fmt, ...)       \
+    do                              \
+    {                               \
+        printf("[INFO ]");          \
+        printf(fmt, ##__VA_ARGS__); \
+    } while (0)
 #else
-#define PRINTF_INFO(fmt, ...)
+#define PRINTF_INFO(fmt, ...) ({})
 #endif
+
 #ifdef LOGGING_LEVEL_WARN
 #define LOGGING_LEVEL_ERROR
-#define PRINTF_WARN(fmt, ...)                                                  \
-  printf("[WARN /%20s:%05d]" fmt "\n", __FILE__, __LINE__, ##__VA_ARGS__)
+#define PRINTF_WARN(fmt, ...)       \
+    do                              \
+    {                               \
+        printf("[WARN ]");          \
+        printf(fmt, ##__VA_ARGS__); \
+    } while (0)
 #else
-#define PRINTF_WARN(fmt, ...)
+#define PRINTF_WARN(fmt, ...) ({})
 #endif
+
 #ifdef LOGGING_LEVEL_ERROR
 #define LOGGING_LEVEL_FATAL
-#define PRINTF_ERROR(fmt, ...)                                                 \
-  printf("[ERROR/%20s:%05d]" fmt "\n", __FILE__, __LINE__, ##__VA_ARGS__)
+#define PRINTF_ERROR(fmt, ...)      \
+    do                              \
+    {                               \
+        printf("[ERROR]");          \
+        printf(fmt, ##__VA_ARGS__); \
+    } while (0)
 #else
-#define PRINTF_ERROR(fmt, ...)
+#define PRINTF_ERROR(fmt, ...) ({})
 #endif
+
 #ifdef LOGGING_LEVEL_FATAL
 #define LOGGING_LEVEL_OFF
-#define PRINTF_FATAL(fmt, ...)                                                 \
-  printf("[FATAL/%20s:%05d]" fmt "\n", __FILE__, __LINE__, ##__VA_ARGS__)
+#define PRINTF_FATAL(fmt, ...)      \
+    do                              \
+    {                               \
+        printf("[FATAL]");          \
+        printf(fmt, ##__VA_ARGS__); \
+    } while (0)
 #else
-#define PRINTF_FATAL(fmt, ...)
+#define PRINTF_FATAL(fmt, ...) ({})
 #endif
+
 #ifdef LOGGING_LEVEL_OFF
 // NOTHING
 #else

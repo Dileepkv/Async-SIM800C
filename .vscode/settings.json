@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "sno_printf_logging.h": "c"
+        "sno_printf_logging.h": "c",
+        "timer.h": "c"
     }
 }

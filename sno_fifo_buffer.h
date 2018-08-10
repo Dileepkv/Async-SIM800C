@@ -69,7 +69,7 @@ extern void show_repr(char *data, uint len);
     }                                                                     \
     inline void BUFFER##_show(void)                                       \
     {                                                                     \
-        printf("[DEBUG   ]" #BUFFER "='");                                \
+        printf("[DEBUG]" #BUFFER "='");                                   \
         show_repr(BUFFER, BUFFER##_wi);                                   \
         printf("'\n");                                                    \
     }                                                                     \
@@ -79,9 +79,7 @@ extern void show_repr(char *data, uint len);
     }                                                                     \
     inline uint BUFFER##_read_pipe_len(void)                              \
     {                                                                     \
-        uint buf_len = ARR_LEN(BUFFER) - 1;                               \
         uint used_len = BUFFER##_wi;                                      \
-        uint remain_len = buf_len - used_len;                             \
         return used_len;                                                  \
     }                                                                     \
     inline char *BUFFER##_write_pipe(void)                                \
@@ -99,7 +97,6 @@ extern void show_repr(char *data, uint len);
     {                                                                     \
         uint buf_len = ARR_LEN(BUFFER) - 1;                               \
         uint used_len = BUFFER##_wi;                                      \
-        uint remain_len = buf_len - used_len;                             \
         uint rightlen = buf_len - MIN(len, used_len);                     \
         memmove(BUFFER, BUFFER + len, rightlen);                          \
         BUFFER##_wi -= len;                                               \

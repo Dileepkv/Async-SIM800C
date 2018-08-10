@@ -117,11 +117,11 @@ register_network:
         {
             if (lastFind[9] == '1')
             {
-                PRINTF_INFO("已注册到网络，本地流量, 模式<%3.3s>\n", lastFind + 7);
+                PRINTF_INFO("已注册到网络，本地流量, 模式<%c>\n", lastFind[7]);
             }
             if (lastFind[9] == '5')
             {
-                PRINTF_INFO("已注册到网络，漫游流量, 模式<%3.3s>\n", lastFind + 7);
+                PRINTF_INFO("已注册到网络，漫游流量, 模式<%c>\n", lastFind[7]);
             }
             goto check_connect;
         }
@@ -177,7 +177,7 @@ socket_connect_to_server:
         goto register_network;
 
     // 开始连接计时
-    static int timer_connecting = 0;
+    static timer_t timer_connecting = 0;
     SETTIMER(timer_connecting);
     goto check_connect;
 
@@ -202,13 +202,13 @@ check_connect:
     sscanf(buf_serial_recv_last_find + 6, "%d,%d", &xhzl1, &xhzl2);
     PRINTF_INFO("信号质量<%d, %d>\n", xhzl1, xhzl2);
 
-    PRINTF_DEBUG("正在确认连接状态...\n");
+    PRINTF_DEBUG("正在确认连接状态...");
     QUERY_AT(1000, "AT+CIPSTATUS", "OK");
     if (flag_timeout)
         goto check_at;
     if (buf_serial_recv_find((char *)"CONNECT OK"))
     {
-        PRINTF_INFO("已连接到服务器\n");
+        PRINTF_INFO("已连接到服务器");
         flag_socket_ready = 1;
         goto communication;
     }
@@ -217,35 +217,35 @@ check_connect:
         // 8诫还没较撅
         if (TIMEOUT(timer_connecting, 8000))
         {
-            PRINTF_WARN("连接超时，尝试重新连接\n");
+            PRINTF_WARN("连接超时，尝试重新连接");
             goto socket_connect_to_server;
         }
-        PRINTF_INFO("\n");
+        PRINTF_INFO("");
         goto check_connect;
     }
     if (buf_serial_recv_find((char *)"ERROR"))
     {
-        PRINTF_ERROR("连接错误，尝试重新连接\n");
+        PRINTF_ERROR("连接错误，尝试重新连接");
         goto socket_connect_to_server;
     }
     if (buf_serial_recv_find((char *)"TCP CLOSED"))
     {
-        PRINTF_ERROR("连接断开，尝试重新连接\n");
+        PRINTF_ERROR("连接断开，尝试重新连接");
         flag_socket_ready = 0;
         goto socket_connect_to_server;
     }
     if (buf_serial_recv_find((char *)"IP INITIAL"))
     {
-        PRINTF_DEBUG("未获得IP，尝试重新连接\n");
+        PRINTF_DEBUG("未获得IP，尝试重新连接");
         goto socket_connect_to_server;
     }
     if (buf_serial_recv_find((char *)"IP CONFIG"))
     {
-        PRINTF_DEBUG("正在获取IP\n");
+        PRINTF_DEBUG("正在获取IP");
         goto check_connect;
     }
 
-    PRINTF_ERROR("未能确认链接状态\n");
+    PRINTF_ERROR("未能确认链接状态");
     goto socket_connect_to_server;
 
 communication:
@@ -254,7 +254,7 @@ communication:
     watch_status:
         if (buf_serial_recv_find((char *)"CLOSED"))
         {
-            PRINTF_DEBUG("接憋较匡...\n");
+            PRINTF_DEBUG("接憋较匡...");
             flag_socket_ready = 0;
             // 皆讹
             goto socket_connect_to_server;
@@ -314,12 +314,12 @@ communication:
                 // 切换到其它任务上，防止阻塞
                 STS_DOEVENTS();
             }
-            PRINTF_DEBUG("正在从服务器接收数据 (完成)...\n");
+            PRINTF_DEBUG("正在从服务器接收数据 (完成)...");
         }
     socket_send:
         if (buf_socket_send_wi)
         {
-            PRINTF_DEBUG("正在向服务器发送数据...\n");
+            PRINTF_DEBUG("正在向服务器发送数据...");
             QUERY_AT(2000, "AT+CIPSEND", ">");
             if (flag_timeout)
                 goto check_connect;
@@ -330,7 +330,7 @@ communication:
             if (flag_timeout)
                 goto check_connect;
             buf_socket_send_wi = 0;
-            PRINTF_DEBUG("数据发送完成\n");
+            PRINTF_DEBUG("数据发送完成");
         }
         STS_DOEVENTS();
     }

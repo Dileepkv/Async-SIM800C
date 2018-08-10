@@ -4,6 +4,7 @@
  */
 #include "sno_fifo_buffer.h"
 #include "common.h"
+#include "printf.h"
 #include <string.h>
 
 /**
@@ -14,10 +15,7 @@ inline uint fifo_buffer_read(char *fifo_buffer, uint *wi, uint *ri, uint len,
                              char *buffer, uint buffer_len)
 {
     /* TODO: 升级环形缓冲区 */
-    /* 保险起见，最后一位留给 \0 ，防止字符串函数出界 */
-    uint fifo_buffer_len = len - 1;
     uint used_len = *wi;
-    uint empty_len = fifo_buffer_len - used_len;
     uint read_len = MIN(buffer_len, used_len);
     if (read_len)
     {
@@ -88,7 +86,6 @@ inline char *fifo_buffer_trimleft(char *fifo_buffer, uint *wi, uint *ri,
 {
     uint buf_len = len - 1;
     uint used_len = *wi;
-    uint remain_len = buf_len - used_len;
     uint rightlen = buf_len - MIN(trim_len, used_len);
     memmove(fifo_buffer, fifo_buffer + trim_len, rightlen);
     *wi -= len;

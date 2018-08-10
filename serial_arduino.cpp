@@ -6,8 +6,8 @@
 SoftwareSerial mySerial(2, 3); // RX=2,TX=3
 void init_serial()
 {
-    mySerial.begin(115200);
-    Serial.begin(115200);
+    mySerial.begin(9600);
+    Serial.begin(9600);
 }
 
 unsigned int serial_write(char *buffer, unsigned int buffer_length)

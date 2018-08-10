@@ -19,11 +19,12 @@
 #pragma once
 // 提供时间函数
 
+typedef unsigned long timer_t;
+
 #ifdef WINDOWS
 #include <windows.h>
 #define NOW() ((unsigned long)GetTickCount())
 #endif
-
 #ifdef ARDUINO
 extern unsigned long millis();
 #define NOW() ((unsigned long)millis())

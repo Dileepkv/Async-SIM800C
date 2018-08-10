@@ -26,7 +26,7 @@ flag_t flag_press_button;
 void task_work()
 {
 	STS_START();
-	static long timer = 0;
+	//static timer_t timer = 0;
 
 #ifdef WORK_MODE_PHP
 	// 配置sim800c模块的连接动作

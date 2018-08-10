@@ -4,12 +4,12 @@
  */
 #pragma once
 
-typedef unsigned short STS_STATUS_t;
+typedef unsigned short sts_status_t;
 
-#define __STS_START_LINE__ (0)
-#define __STS_ENDED_LINE__ (-1)
+#define __STS_START_LINE__ ((sts_status_t)(0))
+#define __STS_ENDED_LINE__ ((sts_status_t)(-1))
 #define STS_START()                                             \
-    static STS_STATUS_t STS_PAUSED_LINE = __STS_START_LINE__; \
+    static sts_status_t STS_PAUSED_LINE = __STS_START_LINE__; \
     switch (STS_PAUSED_LINE)                                    \
     {                                                           \
     case __STS_START_LINE__:
