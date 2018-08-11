@@ -10,16 +10,15 @@
 #include "sno_task_scheduler.h"
 #include "task_sim800c.h"
 #include "timer.h"
+#include "task_hardware.h"
 
 #define DEVICE_UUID "e9e5a455-3ca3-466f-83b3-ad0a10041ee5"
 
 // extern char buf_socket_recv[];
 // extern char buf_socket_send[];
 
-extern flag_t flag_socket_ready;
 flag_t flag_need_send_data;
 flag_t flag_hello_sended;
-flag_t flag_press_button;
 
 // 逻辑线程
 
@@ -169,11 +168,14 @@ listening:;
 				buf_socket_recv_trimleft(lastFind - buf_socket_recv +
 										 strlen("PRESS_BUTTON"));
 				// 成功
-				PRINTF_INFO("收到指令：PRESS_BUTTON");
+				PRINTF_INFO("收到指令：PRESS_BUTTON\n");
+				flag_press_button = 1;
 			}
 			// printf("%c", tmp);
-			// 尝试吃掉一个字节
-		} while (buf_socket_recv_read(&tmp, 1));
+			// 如果缓冲区满了就扔掉一个字节
+			if (!buf_socket_recv_write_pipe_len())
+				buf_socket_recv_read(&tmp, 1);
+		} while(0);
 		STS_WAIT_UNTIL(1);
 	}
 	goto wait_socket_connected;

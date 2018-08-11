@@ -37,12 +37,11 @@ extern "C"
 #include "task_serial.h"
 #include "task_sim800c.h"
 #include "task_work.h"
+#include "task_hardware.h"
 }
 
 void setup()
 {
-	pinMode(12, OUTPUT);
-
     PRINTF_DEBUG("init serial...\n");
     init_serial();
     PRINTF_INFO("init done..\n");
@@ -57,8 +56,8 @@ void loop()
     task_sim800c();
     PRINTF_DEBUG("task_work\n");
     task_work();
-    // PRINTF_DEBUG( "task_hardware\n");
-    // task_hardware();
+    PRINTF_DEBUG( "task_hardware\n");
+    task_hardware();
     // PRINTF_DEBUG( "task_handle_msg\n");
     // task_handle_msg();
     PRINTF_DEBUG("task_heartbeat\n");

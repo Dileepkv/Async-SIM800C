@@ -29,6 +29,7 @@
 #include "task_serial.h"
 #include "task_sim800c.h"
 #include "task_work.h"
+#include "task_hardware.h"
 #include <windows.h>
 
 /**
@@ -85,4 +86,5 @@ void main()
 #include "task_serial.c"
 #include "task_sim800c.c"
 #include "task_work.c"
+#include "task_hardware.c"
 #endif

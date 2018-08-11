@@ -88,7 +88,7 @@ inline char *fifo_buffer_trimleft(char *fifo_buffer, uint *wi, uint *ri,
     uint used_len = *wi;
     uint rightlen = buf_len - MIN(trim_len, used_len);
     memmove(fifo_buffer, fifo_buffer + trim_len, rightlen);
-    *wi -= len;
+    *wi -= trim_len;
     fifo_buffer[*wi] = '\0';
 }
 

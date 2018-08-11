@@ -7,6 +7,8 @@
 #include "task_serial.h"
 #pragma once
 
+extern flag_t flag_socket_close;
+extern flag_t flag_socket_ready;
 
 // #ifdef WINDOWS
 THIS_IS_A_FIFO_BUFFER_DECLARE(buf_socket_send);

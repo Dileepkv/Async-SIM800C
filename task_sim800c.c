@@ -81,7 +81,7 @@ void task_sim800c()
 
 check_at:
     PRINTF_DEBUG("正在 AT 测试...\n");
-    QUERY_AT(1000, "AT", "OK");
+    QUERY_AT(200, "AT", "OK");
     if (flag_timeout)
     {
         PRINTF_ERROR("模块失联！\n");
@@ -259,7 +259,7 @@ communication:
     watch_status:
         if (buf_serial_recv_find((char *)"CLOSED"))
         {
-            PRINTF_DEBUG("接憋较匡...\n");
+            PRINTF_DEBUG("连接被服务器关闭，尝试重连...\n");
             flag_socket_ready = 0;
             // 皆讹
             goto socket_connect_to_server;
@@ -268,14 +268,26 @@ communication:
         buf_serial_recv_last_find = buf_serial_recv_find((char *)"+IPD,");
         if (buf_serial_recv_last_find)
         {
+            // 等待输出冒号
+            char *pos_colom;
+            static timer_t timer_wait_colom;
+            SETTIMER(timer_wait_colom);
+            while(!(pos_colom = strstr(buf_serial_recv_last_find, ":"))){
+                if(TIMEOUT(timer_wait_colom, 2000)){
+                    goto check_at;
+                }
+                // 缓冲区满了就扔掉一些字节
+                char tmp;
+                if(!buf_serial_recv_write_pipe_len())
+                    buf_serial_recv_read(&tmp, 1);
+                STS_DOEVENTS();
+            }
+
             // 读取数据长度
             static unsigned int data_len;
             sscanf(buf_serial_recv_last_find + 5, "%d", &data_len);
             // 始位
-            // FIXME: 错误处理：如果找不到冒号呢
-            char *posColom;
-            posColom = strstr(buf_serial_recv_last_find, ":");
-            buf_serial_recv_last_find = posColom + 1;
+            buf_serial_recv_last_find = pos_colom + 1;
             // 缓冲区指向数据开始的地方
             buf_serial_recv_trimleft(buf_serial_recv_last_find - buf_serial_recv);
             // buf_serial_recv_show();
